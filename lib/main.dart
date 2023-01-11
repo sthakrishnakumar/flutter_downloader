@@ -1,4 +1,4 @@
-import 'package:downloader_app/features/downloader/presentation/views/page2.dart';
+import 'package:downloader_app/features/downloader/presentation/views/download_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 

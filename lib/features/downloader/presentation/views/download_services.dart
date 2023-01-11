@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -39,6 +40,7 @@ class DownloadingService {
   static Future<String?> _getPath() async {
     if (Platform.isAndroid) {
       final externalDir = await getExternalStorageDirectory();
+      log('${externalDir?.path}');
       return externalDir?.path;
     }
 
