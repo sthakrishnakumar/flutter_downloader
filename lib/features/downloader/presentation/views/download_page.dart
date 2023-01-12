@@ -3,7 +3,6 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:downloader_app/features/downloader/presentation/views/download_services.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
@@ -27,9 +26,9 @@ class _MainPageState extends State<MainPage> {
     IsolateNameServer.registerPortWithName(
         _receivePort.sendPort, DownloadingService.downloadingPortName);
     FlutterDownloader.registerCallback(DownloadingService.downloadingCallBack);
-    _receivePort.listen((message) {
-      Fimber.d('Got message from port: $message');
-    });
+    // _receivePort.listen((message) {
+    //   // Fimber.d('Got message from port: $message');
+    // });
   }
 
   @override
@@ -41,6 +40,7 @@ class _MainPageState extends State<MainPage> {
   void downloadFile(String url) async {
     try {
       await DownloadingService.createDownloadTask(url);
+      urlController.clear();
     } catch (e) {
       log("error");
     }
@@ -53,7 +53,16 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('hello'),
+        title: const Text('Download Home'),
+        centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (formkey.currentState!.validate()) {
+            downloadFile(urlController.text);
+          }
+        },
+        child: const Icon(Icons.download),
       ),
       body: Center(
         child: Form(
@@ -72,27 +81,25 @@ class _MainPageState extends State<MainPage> {
                     fontStyle: FontStyle.italic,
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextFormField(
                   controller: urlController,
-                  decoration: const InputDecoration(hintText: 'Enter Url'),
+                  decoration: InputDecoration(
+                    hintText: 'Enter Url',
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        urlController.clear();
+                      },
+                      child: const Icon(Icons.clear),
+                    ),
+                  ),
                   validator: (value) {
                     return value!.isEmpty
                         ? "Please Enter Url to Download"
                         : null;
                   },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formkey.currentState!.validate()) {
-                      log('pre download');
-                      downloadFile(urlController.text);
-                      log('download');
-                    }
-                  },
-                  child: const Text('Download'),
                 ),
               ],
             ),

@@ -1,6 +1,8 @@
-import 'package:downloader_app/features/downloader/presentation/views/download_page.dart';
+import 'package:downloader_app/features/save%20file/file_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+
+import 'core/commons.dart';
 
 const debug = true;
 void main() async {
@@ -16,11 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: NavigationService.materialKey,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(),
+      home: FlutterDemo(storage: CounterStorage()),
     );
   }
 }
